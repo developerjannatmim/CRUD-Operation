@@ -4,8 +4,15 @@ include("connect.php");
 $objCrudAdmin = new crudOperation();
 
 
-if (isset($_POST['user_info'])) {
-    $return_msg = $objCrudAdmin->add_data($_POST);
+if (isset($_GET['status'])) {
+    if ($_GET['status'] = "edit") {
+        $id = $_GET['id'];
+        $returnData = $objCrudAdmin->display_data_by_id($id);
+    }
+}
+
+if (isset($_POST['u_user_info'])) {
+    $update_data = $objCrudAdmin->update_data($_POST);
 }
 
 ?>
@@ -31,26 +38,27 @@ if (isset($_POST['user_info'])) {
     <div class="container my-4 p-4 shadow">
         <h1><a href="display.php" class="title">All Users Information</a></h1>
         <form class="form" method="post">
-            <?php if (isset($return_msg)) {
-                echo $return_msg;
+            <?php if (isset($update_data)) {
+                echo $update_data;
             } ?>
             <div class="form-group">
                 <label for="">Name</label>
-                <input type="text" class="form-control mb-2" placeholder="enter your name" name="name" />
+                <input type="text" class="form-control mb-2" name="u_user_name" value="<?php echo $returnData['user_name']; ?>" />
+                <input type="hidden" name="user_id" value="<?php echo $returnData['id']; ?>" />
             </div>
             <div class="form-group">
                 <label for="">Email</label>
-                <input type="email" class="form-control mb-2" placeholder="enter your email" name="email" />
+                <input type="email" class="form-control mb-2" name="u_user_email" value="<?php echo $returnData['user_email']; ?>" />
             </div>
             <div class="form-group">
                 <label for="">Mobile</label>
-                <input type="number" class="form-control mb-2" placeholder="enter your mobile number" name="mobile" />
+                <input type="number" class="form-control mb-2" name="u_user_mobile" value="<?php echo $returnData['user_phone']; ?>" />
             </div>
             <div class="form-group">
                 <label for="">Password</label>
-                <input type="password" class="form-control mb-2" placeholder="enter your password" name="password" />
+                <input type="password" class="form-control mb-2" name="u_user_password" value="<?php echo $returnData['user_password']; ?>" />
             </div>
-            <button type="submit" name="user_info" class="btn btn-primary">Submit</button>
+            <button type="submit" name="u_user_info" class="btn btn-primary">Update Information</button>
         </form>
     </div>
 
